@@ -2,7 +2,7 @@
 function loadChatbot() {
   // Create the chatbot iframe
   var chatbotIframe = document.createElement("iframe");
-  chatbotIframe.src = "https://your-chatbot-url.com"; // Replace with your chatbot URL
+  // chatbotIframe.src = "https://your-chatbot-url.com"; // Replace with your chatbot URL
   chatbotIframe.width = "350";
   chatbotIframe.height = "500";
   chatbotIframe.style.border = "none";
@@ -14,6 +14,10 @@ function loadChatbot() {
 
   // Append the iframe to the body
   document.body.appendChild(chatbotIframe);
+
+  setTimeout(function() {
+    chatbotIframe.src = "https://your-chatbot-url.com"; // Replace with your chatbot URL
+  }, 100);
 }
 
 // Create a function to add the chatbot button
