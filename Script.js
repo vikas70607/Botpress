@@ -1,56 +1,84 @@
-(function() {
-  // Function to load the chatbot
-  function loadChatbot() {
-    // Check if the chatbot iframe already exists
-    if (document.getElementById('chatbotIframe')) {
-      return;
-    }
+// Get The URL
+const site = window.location.hostname
 
-    // Create the chatbot iframe
-    var chatbotIframe = document.createElement("iframe");
-    chatbotIframe.id = "chatbotIframe";
-    chatbotIframe.src = "https://your-chatbot-url.com"; // Replace with your chatbot URL
-    chatbotIframe.width = "350";
-    chatbotIframe.height = "500";
-    chatbotIframe.style.border = "none";
-    chatbotIframe.style.boxShadow = "0px 0px 10px rgba(0, 0, 0, 0.1)";
-    chatbotIframe.style.position = "fixed";
-    chatbotIframe.style.bottom = "20px";
-    chatbotIframe.style.right = "20px";
-    chatbotIframe.style.zIndex = "1000"; // Ensure it's above other elements
+// alert("Injector - The JavaScript has been injected to: " + site + " 🤖")
 
-    // Append the iframe to the body
-    document.body.appendChild(chatbotIframe);
-  }
+// Add Custom CSS - Function
+const Add_Custom_Style = css => document.head.appendChild(document.createElement("style")).innerHTML = css
 
-  // Function to add the chatbot button
-  function addChatbotButton() {
-    // Create the button element
-    var chatbotButton = document.createElement("button");
-    chatbotButton.innerText = "Chat with Bot";
-    chatbotButton.style.position = "fixed";
-    chatbotButton.style.bottom = "20px";
-    chatbotButton.style.right = "20px";
-    chatbotButton.style.zIndex = "999"; // Ensure it's above other elements
-    chatbotButton.style.padding = "10px 20px";
-    chatbotButton.style.backgroundColor = "#007bff";
-    chatbotButton.style.color = "#fff";
-    chatbotButton.style.border = "none";
-    chatbotButton.style.borderRadius = "5px";
-    chatbotButton.style.cursor = "pointer";
-    chatbotButton.style.boxShadow = "0px 0px 10px rgba(0, 0, 0, 0.1)";
+// Create Custom Element - Function
+function Create_Custom_Element(tag, attr_tag, attr_name, value) {
+    const custom_element = document.createElement(tag)
+    custom_element.setAttribute(attr_tag, attr_name)
+    custom_element.innerHTML = value
+    document.body.append(custom_element)
+}
 
-    // Add an event listener to open the chatbot when clicked
-    chatbotButton.addEventListener("click", function() {
-      loadChatbot();
-    });
+// JS Codes For youtube.com
+if (site.includes("youtube.com")) {
+    /* -------------- */
+    /* Add Custom CSS */
+    /* -------------- */
+    Add_Custom_Style(`
+        @import url("https://fonts.googleapis.com/css?family=Raleway");
 
-    // Append the button to the body
-    document.body.appendChild(chatbotButton);
-  }
+        * {
+            font-family: "Raleway" !important;
+            color: #00ff40 !important;
+        }
 
-  // Wait for the DOM to load before adding the button
-  document.addEventListener("DOMContentLoaded", function() {
-    addChatbotButton();
-  });
-})();
+        ytd-channel-about-metadata-renderer {
+            zoom: 1.6;
+        }
+
+        #meta.ytd-c4-tabbed-header-renderer {
+            zoom: 1.3;
+        }
+
+        #js-custom-element {
+            font-size: 60px;
+            padding: 150px 0;
+            color: #ff0037 !important;
+            background-color: #fffffff2;
+            position: fixed;
+            top: 0;
+            text-align: center;
+            width: 100%;
+            z-index: 999999;
+        }
+
+        .js-custom-element {
+            font-size: 60px;
+            padding: 150px 0;
+            color: #008dff !important;
+            background-color: #fffffff2;
+            position: fixed;
+            bottom: 0;
+            text-align: center;
+            width: 100%;
+            z-index: 999999;
+        }
+    `)
+
+    /* ---------------------- */
+    /* Create Custom Elements */
+    /* ---------------------- */
+    // Create_Custom_Element(
+    //     "div",
+    //     "id",
+    //     "js-custom-element",
+    //     "My Custom JS Element 1"
+    // )
+    // Create_Custom_Element(
+    //     "div",
+    //     "class",
+    //     "js-custom-element",
+    //     "My Custom JS Element 2"
+    // )
+}
+
+// JS Codes For google.com
+if (site.includes("google.com")) { }
+
+// JS Codes For microsoft.com
+if (site.includes("microsoft.com")) { }
