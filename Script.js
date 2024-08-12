@@ -1,84 +1,99 @@
-// Get The URL
-const site = window.location.hostname
+(function() {
+    // Create the chat widget container
+    var chatWidget = document.createElement('div');
+    chatWidget.style.position = 'fixed';
+    chatWidget.style.bottom = '20px';
+    chatWidget.style.right = '20px';
+    chatWidget.style.width = '300px';
+    chatWidget.style.height = '400px';
+    chatWidget.style.border = '1px solid #ccc';
+    chatWidget.style.borderRadius = '10px';
+    chatWidget.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
+    chatWidget.style.overflow = 'hidden';
+    chatWidget.style.backgroundColor = '#fff';
+    document.body.appendChild(chatWidget);
 
-// alert("Injector - The JavaScript has been injected to: " + site + " 🤖")
+    // Create the chatbox element
+    var chatbox = document.createElement('div');
+    chatbox.style.height = 'calc(100% - 50px)';
+    chatbox.style.padding = '10px';
+    chatbox.style.overflowY = 'auto';
+    chatWidget.appendChild(chatbox);
 
-// Add Custom CSS - Function
-const Add_Custom_Style = css => document.head.appendChild(document.createElement("style")).innerHTML = css
+    // Create the input area
+    var inputArea = document.createElement('div');
+    inputArea.style.position = 'absolute';
+    inputArea.style.bottom = '0';
+    inputArea.style.width = '100%';
+    inputArea.style.display = 'flex';
+    inputArea.style.borderTop = '1px solid #ccc';
+    chatWidget.appendChild(inputArea);
 
-// Create Custom Element - Function
-function Create_Custom_Element(tag, attr_tag, attr_name, value) {
-    const custom_element = document.createElement(tag)
-    custom_element.setAttribute(attr_tag, attr_name)
-    custom_element.innerHTML = value
-    document.body.append(custom_element)
-}
+    // Create the input field
+    var inputField = document.createElement('input');
+    inputField.type = 'text';
+    inputField.placeholder = 'Type a message...';
+    inputField.style.flex = '1';
+    inputField.style.padding = '10px';
+    inputField.style.border = 'none';
+    inputArea.appendChild(inputField);
 
-// JS Codes For youtube.com
-if (site.includes("youtube.com")) {
-    /* -------------- */
-    /* Add Custom CSS */
-    /* -------------- */
-    Add_Custom_Style(`
-        @import url("https://fonts.googleapis.com/css?family=Raleway");
+    // Create the send button
+    var sendButton = document.createElement('button');
+    sendButton.textContent = 'Send';
+    sendButton.style.padding = '10px';
+    sendButton.style.border = 'none';
+    sendButton.style.backgroundColor = '#007bff';
+    sendButton.style.color = '#fff';
+    sendButton.style.cursor = 'pointer';
+    inputArea.appendChild(sendButton);
 
-        * {
-            font-family: "Raleway" !important;
-            color: #00ff40 !important;
+    // Display message function
+    function displayMessage(message, sender) {
+        var messageElement = document.createElement('div');
+        messageElement.style.padding = '5px';
+        messageElement.style.margin = '5px 0';
+        messageElement.style.borderRadius = '5px';
+        messageElement.style.backgroundColor = sender === 'bot' ? '#f1f1f1' : '#dcf8c6';
+        messageElement.textContent = message;
+        messageElement.style.textAlign = sender === 'bot' ? 'left' : 'right';
+        chatbox.appendChild(messageElement);
+        chatbox.scrollTop = chatbox.scrollHeight;
+    }
+
+    // Send message function
+    function sendMessage() {
+        var userMessage = inputField.value;
+
+        if (userMessage.trim() !== '') {
+            displayMessage(userMessage, 'user');
+
+            // Send the message to the Flask backend
+            fetch('http://127.0.0.1:5000/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: userMessage })
+            })
+            .then(response => response.json())
+            .then(data => {
+                displayMessage(data.response, 'bot');
+            })
+            .catch(error => console.error('Error:', error));
+
+            inputField.value = '';
         }
+    }
 
-        ytd-channel-about-metadata-renderer {
-            zoom: 1.6;
+    // Handle send button click
+    sendButton.addEventListener('click', sendMessage);
+
+    // Handle Enter key press
+    inputField.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            sendMessage();
         }
+    });
 
-        #meta.ytd-c4-tabbed-header-renderer {
-            zoom: 1.3;
-        }
-
-        #js-custom-element {
-            font-size: 60px;
-            padding: 150px 0;
-            color: #ff0037 !important;
-            background-color: #fffffff2;
-            position: fixed;
-            top: 0;
-            text-align: center;
-            width: 100%;
-            z-index: 999999;
-        }
-
-        .js-custom-element {
-            font-size: 60px;
-            padding: 150px 0;
-            color: #008dff !important;
-            background-color: #fffffff2;
-            position: fixed;
-            bottom: 0;
-            text-align: center;
-            width: 100%;
-            z-index: 999999;
-        }
-    `)
-
-    /* ---------------------- */
-    /* Create Custom Elements */
-    /* ---------------------- */
-    // Create_Custom_Element(
-    //     "div",
-    //     "id",
-    //     "js-custom-element",
-    //     "My Custom JS Element 1"
-    // )
-    // Create_Custom_Element(
-    //     "div",
-    //     "class",
-    //     "js-custom-element",
-    //     "My Custom JS Element 2"
-    // )
-}
-
-// JS Codes For google.com
-if (site.includes("google.com")) { }
-
-// JS Codes For microsoft.com
-if (site.includes("microsoft.com")) { }
+})();
